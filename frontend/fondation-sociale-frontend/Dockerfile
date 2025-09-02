@@ -1,21 +1,27 @@
-# Simple static frontend with nginx
-FROM nginx:alpine
+# Development server for Angular application
+FROM node:20-alpine
 
 # Install curl for health checks
 RUN apk add --no-cache curl
 
-# Copy static HTML files
-COPY static/ /usr/share/nginx/html/
+# Set working directory
+WORKDIR /app
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+# Copy package files
+COPY package*.json ./
 
-# Expose port
+# Install dependencies
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Expose port for development server
 EXPOSE 4200
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:4200/ || exit 1
+HEALTHCHECK --interval=15s --timeout=5s --start-period=20s --retries=10 \
+  CMD curl -fsS http://localhost:4200/ || exit 1
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start development server
+CMD ["npm", "run", "start", "--", "--host", "0.0.0.0", "--port", "4200"]

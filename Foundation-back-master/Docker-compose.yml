@@ -16,10 +16,10 @@ services:
     networks:
       - backend
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
       start_period: 30s
 
   # Discovery Service (Eureka)
@@ -27,18 +27,24 @@ services:
     build: ./discovery-service
     container_name: discovery-dock
     ports:
-      - '8762:8762'
+      - "8762:8762"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     networks:
       - backend
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8762/"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
 
   # Config Service
   config-service:
     build: ./config-service
     container_name: config-dock
     ports:
-      - '8888:8888'
+      - "8888:8888"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8762/eureka/
@@ -47,17 +53,24 @@ services:
         condition: service_healthy
     networks:
       - backend
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8888/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
 
   # Gateway Service
   gateway-service:
     build: ./gateway-service
     container_name: gateway-dock
     ports:
-      - '9999:9999'
+      - "9999:9999"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8762/eureka/
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - SPRING_CONFIG_IMPORT=configserver:http://config-service:8888
     depends_on:
       config-service:
         condition: service_healthy
@@ -65,111 +78,162 @@ services:
         condition: service_healthy
     networks:
       - backend
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:9999/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
 
   # Auth Service
   auth-service:
     build: ./auth-service
     container_name: auth-dock
     ports:
-      - '8081:8081'
+      - "8081:8081"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8762/eureka/
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/foundation?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_CONFIG_IMPORT=configserver:http://config-service:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8762/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/foundation?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=foundation
       - SPRING_DATASOURCE_PASSWORD=foundation123
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
     depends_on:
-      config-service:
-        condition: service_healthy
       mysql:
+        condition: service_healthy
+      config-service:
         condition: service_healthy
     networks:
       - backend
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8081/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
 
   # User Service
   user-service:
     build: ./user-service
     container_name: user-dock
     ports:
-      - '8082:8082'
+      - "8082:8082"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8762/eureka/
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/foundation?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_CONFIG_IMPORT=configserver:http://config-service:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8762/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/foundation?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=foundation
       - SPRING_DATASOURCE_PASSWORD=foundation123
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
     depends_on:
-      config-service:
-        condition: service_healthy
       mysql:
+        condition: service_healthy
+      config-service:
         condition: service_healthy
     networks:
       - backend
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8082/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
 
   # Content Service (Temporarily disabled due to compilation errors)
   # content-service:
   #   build: ./content-service
   #   container_name: content-dock
   #   ports:
-  #     - '8083:8083'
+  #     - "8083:8083"
   #   environment:
   #     - SPRING_PROFILES_ACTIVE=docker
-  #     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8762/eureka/
   #     - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-  #     - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/foundation?useSSL=false&allowPublicKeyRetrieval=true
+  #     - SPRING_CONFIG_IMPORT=configserver:http://config-service:8888
+  #     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8762/eureka/
+  #     - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/foundation?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
   #     - SPRING_DATASOURCE_USERNAME=foundation
   #     - SPRING_DATASOURCE_PASSWORD=foundation123
+  #     - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
+  #     - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
   #   depends_on:
-  #     config-service:
-  #       condition: service_healthy
   #     mysql:
+  #       condition: service_healthy
+  #     config-service:
   #       condition: service_healthy
   #   networks:
   #     - backend
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-fsS", "http://localhost:8083/actuator/health"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 20
+  #     start_period: 30s
 
   # Social Service
   social-service:
     build: ./social-service
     container_name: social-dock
     ports:
-      - '8084:8084'
+      - "8084:8084"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8762/eureka/
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/foundation?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_CONFIG_IMPORT=configserver:http://config-service:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8762/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/foundation?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=foundation
       - SPRING_DATASOURCE_PASSWORD=foundation123
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
     depends_on:
-      config-service:
-        condition: service_healthy
       mysql:
+        condition: service_healthy
+      config-service:
         condition: service_healthy
     networks:
       - backend
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8084/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
 
   # Notification Service
   notification-service:
     build: ./notification-service
     container_name: notification-dock
     ports:
-      - '8085:8085'
+      - "8085:8085"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8762/eureka/
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/foundation?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_CONFIG_IMPORT=configserver:http://config-service:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8762/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/foundation?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=foundation
       - SPRING_DATASOURCE_PASSWORD=foundation123
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
     depends_on:
-      config-service:
-        condition: service_healthy
       mysql:
+        condition: service_healthy
+      config-service:
         condition: service_healthy
     networks:
       - backend
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8085/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
 
   # Admin Service
   admin-service:
@@ -179,18 +243,27 @@ services:
       - "8086:8086"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8762/eureka/
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/foundation?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_CONFIG_IMPORT=configserver:http://config-service:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8762/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/foundation?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=foundation
       - SPRING_DATASOURCE_PASSWORD=foundation123
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
     depends_on:
-      config-service:
-        condition: service_healthy
       mysql:
+        condition: service_healthy
+      config-service:
         condition: service_healthy
     networks:
       - backend
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8086/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
 
   # Frontend Application
   frontend:
@@ -204,6 +277,24 @@ services:
     networks:
       - backend
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:4200/"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  # Adminer for MySQL Database Management
+  adminer:
+    image: adminer:4
+    container_name: adminer-dock
+    ports:
+      - "8087:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - backend
 
 networks:
   backend:
