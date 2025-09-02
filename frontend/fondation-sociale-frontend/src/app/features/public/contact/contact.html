@@ -1,0 +1,144 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="text-center mb-12">
+    <h1 class="text-4xl font-bold text-gray-900 mb-4">Contactez-nous</h1>
+    <p class="text-lg text-gray-600">Nous sommes là pour répondre à vos questions</p>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-12">
+    <!-- Formulaire de contact -->
+    <div class="bg-white rounded-2xl card-shadow p-8">
+      <h2 class="text-2xl font-semibold text-gray-900 mb-6">Envoyez-nous un message</h2>
+      <form class="space-y-6" (ngSubmit)="onSubmit()">
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Prénom</label>
+            <input type="text" 
+                   [(ngModel)]="contact.prenom"
+                   name="prenom"
+                   required
+                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Nom</label>
+            <input type="text" 
+                   [(ngModel)]="contact.nom"
+                   name="nom"
+                   required
+                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+          <input type="email" 
+                 [(ngModel)]="contact.email"
+                 name="email"
+                 required
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Téléphone</label>
+          <input type="tel" 
+                 [(ngModel)]="contact.telephone"
+                 name="telephone"
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Sujet</label>
+          <select [(ngModel)]="contact.sujet"
+                  name="sujet"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+            <option *ngFor="let sujet of sujets" [value]="sujet.value">{{ sujet.label }}</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+          <textarea rows="5" 
+                    [(ngModel)]="contact.message"
+                    name="message"
+                    required
+                    placeholder="Décrivez votre demande..."
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"></textarea>
+        </div>
+        <button type="submit" 
+                class="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 rounded-lg font-medium transition-colors">
+          <i class="fas fa-paper-plane mr-2"></i>Envoyer le message
+        </button>
+      </form>
+    </div>
+
+    <!-- Informations de contact -->
+    <div class="space-y-8">
+      <!-- Adresse -->
+      <div class="bg-white rounded-2xl card-shadow p-8">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+            <i class="fas fa-map-marker-alt text-primary-600 text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900">Adresse</h3>
+        </div>
+        <p class="text-gray-600 leading-relaxed">
+          Fondation Sociale des Fonctionnaires<br>
+          Ministère de l'Investissement<br>
+          123 Rue de la République<br>
+          75001 Paris, France
+        </p>
+      </div>
+
+      <!-- Téléphone -->
+      <div class="bg-white rounded-2xl card-shadow p-8">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+            <i class="fas fa-phone text-blue-600 text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900">Téléphone</h3>
+        </div>
+        <p class="text-gray-600 leading-relaxed">
+          <strong>Standard :</strong> 01 23 45 67 89<br>
+          <strong>Prestations :</strong> 01 23 45 67 90<br>
+          <strong>Événements :</strong> 01 23 45 67 91
+        </p>
+      </div>
+
+      <!-- Horaires -->
+      <div class="bg-white rounded-2xl card-shadow p-8">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+            <i class="fas fa-clock text-green-600 text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900">Horaires d'ouverture</h3>
+        </div>
+        <div class="space-y-2 text-gray-600">
+          <div class="flex justify-between">
+            <span>Lundi - Vendredi</span>
+            <span>9h00 - 18h00</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Samedi</span>
+            <span>9h00 - 12h00</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Dimanche</span>
+            <span>Fermé</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="bg-white rounded-2xl card-shadow p-8">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+            <i class="fas fa-envelope text-purple-600 text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900">Email</h3>
+        </div>
+        <p class="text-gray-600 leading-relaxed">
+          <strong>Contact général :</strong><br>
+          contact@fondation-sociale.gouv.fr<br><br>
+          <strong>Prestations :</strong><br>
+          prestations@fondation-sociale.gouv.fr
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

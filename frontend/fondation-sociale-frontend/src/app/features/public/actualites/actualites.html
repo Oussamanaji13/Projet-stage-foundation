@@ -1,0 +1,52 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="mb-8">
+    <h1 class="text-4xl font-bold text-gray-900 mb-4">Actualités & Événements</h1>
+    <p class="text-lg text-gray-600">Restez informé de toutes nos actualités et événements</p>
+  </div>
+
+  <!-- Filtres -->
+  <div class="bg-white rounded-lg card-shadow p-6 mb-8">
+    <div class="flex flex-wrap gap-4">
+      <button *ngFor="let categorie of categories"
+              (click)="filtrerArticles(categorie)"
+              [class]="filtreActif === categorie ? 
+                'bg-primary-600 text-white' : 
+                'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+              class="px-4 py-2 rounded-lg font-medium transition-colors">
+        {{ categorie }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Liste des articles -->
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <article *ngFor="let article of articlesFiltres" 
+             class="bg-white rounded-2xl card-shadow overflow-hidden transition-all hover:scale-105 cursor-pointer">
+      <div class="h-48 bg-gradient-to-br" [ngClass]="article.imageGradient"></div>
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-3">
+          <span class="px-3 py-1 rounded-full text-sm font-medium" [ngClass]="article.couleur">
+            {{ article.categorie }}
+          </span>
+          <span class="text-sm text-gray-500">{{ article.date }}</span>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-3">{{ article.titre }}</h3>
+        <p class="text-gray-600 mb-4">{{ article.description }}</p>
+        <button class="text-primary-600 font-medium hover:text-primary-700">
+          {{ article.categorie === 'Événement' ? 'S\'inscrire' : 'Lire la suite' }} →
+        </button>
+      </div>
+    </article>
+  </div>
+
+  <!-- Pagination -->
+  <div class="flex justify-center mt-12">
+    <div class="flex space-x-2">
+      <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg">Précédent</button>
+      <button class="px-4 py-2 bg-primary-600 text-white rounded-lg">1</button>
+      <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">2</button>
+      <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">3</button>
+      <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg">Suivant</button>
+    </div>
+  </div>
+</div>

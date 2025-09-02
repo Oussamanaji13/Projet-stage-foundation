@@ -1,0 +1,84 @@
+<div class="max-w-4xl mx-auto">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">Mes Avis</h1>
+    <p class="text-gray-600">Partagez votre expérience sur nos prestations</p>
+  </div>
+
+  <!-- Formulaire nouvel avis -->
+  <div class="bg-white rounded-2xl card-shadow p-8 mb-8">
+    <h2 class="text-xl font-semibold text-gray-900 mb-6">Donner un avis</h2>
+    
+    <form class="space-y-6" (ngSubmit)="ajouterAvis()">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Prestation concernée</label>
+        <select [(ngModel)]="nouvelAvis.prestation"
+                name="prestation"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+          <option value="">Sélectionnez une prestation</option>
+          <option *ngFor="let prestation of prestationsDisponibles" [value]="prestation">
+            {{ prestation }}
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Note</label>
+        <div class="flex space-x-2">
+          <button *ngFor="let i of [1,2,3,4,5]"
+                  type="button"
+                  (click)="nouvelAvis.note = i"
+                  class="text-2xl transition-colors"
+                  [class]="i <= nouvelAvis.note ? 'text-yellow-500' : 'text-gray-300'">
+            <i class="fas fa-star"></i>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Commentaire</label>
+        <textarea rows="4" 
+                  [(ngModel)]="nouvelAvis.commentaire"
+                  name="commentaire"
+                  required
+                  placeholder="Partagez votre expérience..."
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"></textarea>
+      </div>
+
+      <button type="submit" 
+              class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+        <i class="fas fa-paper-plane mr-2"></i>Publier l'avis
+      </button>
+    </form>
+  </div>
+
+  <!-- Liste des avis -->
+  <div class="space-y-6">
+    <h2 class="text-xl font-semibold text-gray-900">Mes avis précédents</h2>
+    
+    <div *ngFor="let avis of mesAvis" class="bg-white rounded-2xl card-shadow p-6">
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">{{ avis.prestation }}</h3>
+          <div class="flex items-center space-x-2 mt-1">
+            <div class="flex space-x-1">
+              <i *ngFor="let etoile of getEtoiles(avis.note)" [class]="etoile"></i>
+            </div>
+            <span class="text-sm text-gray-600">{{ avis.date }}</span>
+          </div>
+        </div>
+        <span class="px-3 py-1 rounded-full text-sm font-medium" [ngClass]="getStatutBadge(avis.statut)">
+          {{ getStatutLabel(avis.statut) }}
+        </span>
+      </div>
+      
+      <p class="text-gray-700">{{ avis.commentaire }}</p>
+    </div>
+
+    <div *ngIf="mesAvis.length === 0" class="text-center py-12">
+      <i class="fas fa-comment-alt text-4xl text-gray-400 mb-4"></i>
+      <p class="text-lg text-gray-600">Vous n'avez pas encore donné d'avis.</p>
+      <p class="text-gray-500">Commencez par utiliser nos prestations !</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+.sidebar-item {
+  transition: all 0.2s ease;
+}
+
+.sidebar-item:hover {
+  background-color: rgba(0, 158, 96, 0.1);
+}
+
+.sidebar-item.active {
+  background-color: #009e60;
+  color: white;
+}

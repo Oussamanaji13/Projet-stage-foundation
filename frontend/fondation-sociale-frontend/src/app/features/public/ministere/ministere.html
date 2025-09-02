@@ -1,0 +1,91 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <!-- Header -->
+  <div class="text-center mb-16">
+    <h1 class="text-4xl font-bold text-gray-900 mb-4">Le Ministère de l'Investissement</h1>
+    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+      Découvrez notre ministère, ses missions et son engagement pour le développement économique du pays.
+    </p>
+  </div>
+
+  <!-- Mission principale -->
+  <section class="bg-white rounded-2xl card-shadow p-8 mb-12">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">Notre Mission</h2>
+        <p class="text-lg text-gray-600 mb-6">
+          Le Ministère de l'Investissement pilote la stratégie nationale d'investissement public et privé. 
+          Nous œuvrons pour créer un environnement favorable aux investissements durables et innovants.
+        </p>
+        <div class="space-y-4">
+          <div class="flex items-start">
+            <i class="fas fa-chart-line text-primary-600 mt-1 mr-3"></i>
+            <div>
+              <h3 class="font-semibold text-gray-900">Développement économique</h3>
+              <p class="text-gray-600">Stimuler la croissance par des investissements stratégiques</p>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <i class="fas fa-handshake text-primary-600 mt-1 mr-3"></i>
+            <div>
+              <h3 class="font-semibold text-gray-900">Partenariats public-privé</h3>
+              <p class="text-gray-600">Faciliter la collaboration entre secteurs public et privé</p>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <i class="fas fa-leaf text-primary-600 mt-1 mr-3"></i>
+            <div>
+              <h3 class="font-semibold text-gray-900">Investissement durable</h3>
+              <p class="text-gray-600">Promouvoir des projets respectueux de l'environnement</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-gradient-to-br from-primary-400 to-primary-600 rounded-2xl p-8 text-white text-center">
+        <i class="fas fa-building text-6xl mb-4"></i>
+        <h3 class="text-2xl font-bold mb-2">Ministère de l'Investissement</h3>
+        <p class="text-primary-100">Au service du développement économique</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chiffres clés -->
+  <section class="mb-12">
+    <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">Nos réalisations en chiffres</h2>
+    <div class="grid md:grid-cols-4 gap-8">
+      <div *ngFor="let stat of statistiques" class="bg-white rounded-2xl card-shadow p-6 text-center">
+        <div class="text-3xl font-bold text-primary-600 mb-2">{{ stat.valeur }}</div>
+        <p class="text-gray-600">{{ stat.label }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Organisation -->
+  <section class="bg-white rounded-2xl card-shadow p-8 mb-12">
+    <h2 class="text-3xl font-bold text-gray-900 mb-8">Organisation du Ministère</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div *ngFor="let org of organisation" class="text-center">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" [ngClass]="org.couleur">
+          <i [class]="org.icone + ' text-2xl'"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ org.titre }}</h3>
+        <p class="text-gray-600">{{ org.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Histoire -->
+  <section class="bg-white rounded-2xl card-shadow p-8">
+    <h2 class="text-3xl font-bold text-gray-900 mb-8">Notre Histoire</h2>
+    <div class="space-y-8">
+      <div *ngFor="let item of historique" class="flex items-start">
+        <div class="bg-primary-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold mr-6 flex-shrink-0">
+          {{ item.annee }}
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ item.titre }}</h3>
+          <p class="text-gray-600">{{ item.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

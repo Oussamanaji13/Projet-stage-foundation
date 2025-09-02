@@ -1,0 +1,115 @@
+<!-- Hero Section -->
+<section class="gradient-bg text-white py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <h1 class="text-4xl md:text-6xl font-bold mb-6">
+        Ensemble, construisons<br>votre avenir social
+      </h1>
+      <p class="text-xl md:text-2xl mb-8 text-green-100 max-w-3xl mx-auto">
+        La Fondation Sociale accompagne les fonctionnaires du Ministère de l'Investissement 
+        dans leurs projets personnels et professionnels.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a routerLink="/user/prestations" 
+           class="bg-white text-primary-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center">
+          <i class="fas fa-heart mr-2"></i>Découvrir nos prestations
+        </a>
+        <a routerLink="/login" 
+           class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-primary-600 transition-colors inline-flex items-center justify-center">
+          <i class="fas fa-user mr-2"></i>Espace adhérent
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Présentation de la fondation -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">Notre mission</h2>
+        <p class="text-lg text-gray-600 mb-6">
+          Depuis plus de 30 ans, la Fondation Sociale des Fonctionnaires du Ministère de l'Investissement 
+          œuvre pour améliorer la qualité de vie de ses adhérents et de leurs familles.
+        </p>
+        <div class="space-y-4">
+          <div class="flex items-center">
+            <i class="fas fa-check-circle text-primary-600 mr-3"></i>
+            <span>Prestations sociales et familiales</span>
+          </div>
+          <div class="flex items-center">
+            <i class="fas fa-check-circle text-primary-600 mr-3"></i>
+            <span>Accompagnement personnalisé</span>
+          </div>
+          <div class="flex items-center">
+            <i class="fas fa-check-circle text-primary-600 mr-3"></i>
+            <span>Événements et activités culturelles</span>
+          </div>
+        </div>
+      </div>
+      <div class="bg-gray-100 rounded-2xl p-8 text-center">
+        <i class="fas fa-users text-primary-600 text-6xl mb-4"></i>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">2,847 adhérents</h3>
+        <p class="text-gray-600">nous font confiance</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Actualités récentes -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">Actualités récentes</h2>
+      <p class="text-lg text-gray-600">Restez informé de nos dernières nouvelles</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8">
+      <article *ngFor="let actualite of actualitesRecentes" 
+               class="bg-white rounded-2xl card-shadow overflow-hidden transition-all hover:scale-105 cursor-pointer">
+        <div class="h-48 bg-gradient-to-br" [ngClass]="actualite.couleur"></div>
+        <div class="p-6">
+          <div class="text-sm text-primary-600 font-medium mb-2">{{ actualite.date }}</div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">{{ actualite.titre }}</h3>
+          <p class="text-gray-600 mb-4">{{ actualite.description }}</p>
+          <a routerLink="/actualites" class="text-primary-600 font-medium hover:text-primary-700">
+            Lire la suite →
+          </a>
+        </div>
+      </article>
+    </div>
+    <div class="text-center mt-8">
+      <a routerLink="/actualites" 
+         class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-medium transition-colors inline-flex items-center">
+        Voir toutes les actualités
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Événements à venir -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">Événements à venir</h2>
+      <p class="text-lg text-gray-600">Participez à nos prochains événements</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8">
+      <div *ngFor="let evenement of evenementsAvenir" class="bg-gray-50 rounded-2xl p-8">
+        <div class="flex items-center mb-4">
+          <div class="text-white rounded-lg p-3 mr-4" [ngClass]="evenement.couleur">
+            <i [class]="evenement.icone + ' text-xl'"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold text-gray-900">{{ evenement.titre }}</h3>
+            <p class="text-gray-600">{{ evenement.date }} - {{ evenement.heure }}</p>
+          </div>
+        </div>
+        <p class="text-gray-600 mb-4">{{ evenement.description }}</p>
+        <button class="text-primary-600 font-medium hover:text-primary-700">
+          S'inscrire →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,42 @@
+<div class="w-64 bg-white shadow-lg">
+  <!-- Logo -->
+  <div class="p-6 border-b border-gray-200">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center">
+        <i class="fas fa-landmark text-white"></i>
+      </div>
+      <div>
+        <h2 class="font-semibold text-gray-900">Fondation Sociale</h2>
+        <p class="text-xs text-gray-500">
+          {{ userType === 'admin' ? 'Espace Admin' : 'Espace Adhérent' }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="mt-6">
+    <div class="px-4 space-y-2">
+      <a *ngFor="let item of menuItems"
+         [routerLink]="item.route"
+         routerLinkActive="active"
+         class="sidebar-item flex items-center justify-between px-4 py-3 text-gray-700 rounded-lg transition-all">
+        <div class="flex items-center">
+          <i [class]="item.icon + ' mr-3'"></i>
+          <span>{{ item.label }}</span>
+        </div>
+        <span *ngIf="item.badge" 
+              class="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+          {{ item.badge }}
+        </span>
+      </a>
+
+      <!-- Déconnexion -->
+      <a (click)="logout()" 
+         class="sidebar-item flex items-center px-4 py-3 text-gray-700 rounded-lg cursor-pointer">
+        <i class="fas fa-sign-out-alt mr-3"></i>
+        <span>Déconnexion</span>
+      </a>
+    </div>
+  </nav>
+</div>

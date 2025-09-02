@@ -1,0 +1,97 @@
+<div class="space-y-8">
+  <!-- Statistiques principales -->
+  <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-6">
+    <div *ngFor="let stat of statistiques" class="bg-white rounded-2xl card-shadow p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div class="w-12 h-12 rounded-lg flex items-center justify-center" [ngClass]="stat.couleur">
+          <i [class]="stat.icone + ' text-xl'"></i>
+        </div>
+        <div class="flex items-center text-sm">
+          <i [class]="getTendanceIcon(stat.tendance) + ' mr-1'"></i>
+          <span [class]="stat.tendance === 'hausse' ? 'text-green-600' : stat.tendance === 'baisse' ? 'text-red-600' : 'text-gray-600'">
+            {{ stat.evolution }}
+          </span>
+        </div>
+      </div>
+      <h3 class="text-sm font-medium text-gray-600 mb-1">{{ stat.titre }}</h3>
+      <p class="text-3xl font-bold text-gray-900">{{ stat.valeur }}<span *ngIf="stat.titre.includes('Budget')">%</span></p>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-3 gap-8">
+    <!-- Activités récentes -->
+    <div class="lg:col-span-2 bg-white rounded-2xl card-shadow p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-semibold text-gray-900">Activités récentes</h3>
+        <button class="text-primary-600 hover:text-primary-700 text-sm font-medium">
+          Voir tout
+        </button>
+      </div>
+      <div class="space-y-4">
+        <div *ngFor="let activite of activitesRecentes" class="flex items-start space-x-3">
+          <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+            <i [class]="activite.icone + ' text-sm ' + activite.couleur"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-gray-900">{{ activite.type }}</p>
+            <p class="text-sm text-gray-600">{{ activite.description }}</p>
+            <div class="flex items-center space-x-2 mt-1">
+              <span class="text-xs text-gray-500">{{ activite.utilisateur }}</span>
+              <span class="text-xs text-gray-400">•</span>
+              <span class="text-xs text-gray-500">{{ activite.temps }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demandes en attente -->
+    <div class="bg-white rounded-2xl card-shadow p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-semibold text-gray-900">Demandes urgentes</h3>
+        <a routerLink="/admin/adherents" class="text-primary-600 hover:text-primary-700 text-sm font-medium">
+          Gérer
+        </a>
+      </div>
+      <div class="space-y-4">
+        <div *ngFor="let demande of demandesEnAttente" 
+             class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="font-medium text-gray-900">{{ demande.nom }}</h4>
+            <span class="px-2 py-1 rounded-full text-xs font-medium" [ngClass]="getPrioriteClass(demande.priorite)">
+              {{ demande.priorite }}
+            </span>
+          </div>
+          <p class="text-sm text-gray-600">{{ demande.prestation }}</p>
+          <p class="text-xs text-gray-500 mt-1">{{ demande.date }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions rapides -->
+  <div class="bg-white rounded-2xl card-shadow p-6">
+    <h3 class="text-xl font-semibold text-gray-900 mb-6">Actions rapides</h3>
+    <div class="grid md:grid-cols-4 gap-4">
+      <a routerLink="/admin/adherents" 
+         class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+        <i class="fas fa-users text-blue-600 text-xl mr-3"></i>
+        <span class="font-medium text-blue-900">Gérer adhérents</span>
+      </a>
+      <a routerLink="/admin/evenements" 
+         class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+        <i class="fas fa-calendar text-green-600 text-xl mr-3"></i>
+        <span class="font-medium text-green-900">Créer événement</span>
+      </a>
+      <a routerLink="/admin/avis" 
+         class="flex items-center p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors">
+        <i class="fas fa-star text-yellow-600 text-xl mr-3"></i>
+        <span class="font-medium text-yellow-900">Modérer avis</span>
+      </a>
+      <button class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+        <i class="fas fa-chart-bar text-purple-600 text-xl mr-3"></i>
+        <span class="font-medium text-purple-900">Rapports</span>
+      </button>
+    </div>
+  </div>
+</div>
