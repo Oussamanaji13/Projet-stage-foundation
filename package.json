@@ -1,0 +1,43 @@
+{
+  "name": "foundation-sociale-fullstack",
+  "version": "1.0.0",
+  "description": "Plateforme complète de gestion de fondation sociale avec architecture microservices et interface Angular",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "npm install && cd frontend/fondation-sociale-frontend && npm install",
+    "start:backend": "cd Foundation-back-master && docker-compose up -d",
+    "stop:backend": "cd Foundation-back-master && docker-compose down",
+    "start:frontend": "cd frontend/fondation-sociale-frontend && npm start",
+    "build:frontend": "cd frontend/fondation-sociale-frontend && npm run build",
+    "test:frontend": "cd frontend/fondation-sociale-frontend && npm test",
+    "dev": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "clean": "cd Foundation-back-master && mvn clean && cd ../../frontend/fondation-sociale-frontend && npm run clean",
+    "docker:build": "cd Foundation-back-master && docker-compose build",
+    "docker:up": "cd Foundation-back-master && docker-compose up -d",
+    "docker:down": "cd Foundation-back-master && docker-compose down",
+    "docker:logs": "cd Foundation-back-master && docker-compose logs -f"
+  },
+  "keywords": [
+    "foundation",
+    "sociale",
+    "microservices",
+    "spring-boot",
+    "angular",
+    "docker",
+    "java",
+    "typescript"
+  ],
+  "author": "Oussama Najii",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Oussamanaji13/Projet-stage-foundation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Oussamanaji13/Projet-stage-foundation/issues"
+  },
+  "homepage": "https://github.com/Oussamanaji13/Projet-stage-foundation#readme"
+}
